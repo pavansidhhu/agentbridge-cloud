@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { sendGAEvent } from '@next/third-parties/google';
 
-const DOWNLOAD_URL = 'https://github.com/yourusername/agentbridge/releases/latest';
+const DOWNLOAD_URL = 'https://github.com/Yogarathinam/agentbridge/releases/latest';
 
 export default function Download() {
   const [os, setOs] = useState('Windows');
@@ -45,6 +46,7 @@ export default function Download() {
             rel="noopener noreferrer"
             className="btn btn-primary"
             style={{ minWidth: '250px' }}
+            onClick={() => sendGAEvent({ event: 'button_click', value: `download_${os.toLowerCase()}` })}
           >
             ↓ &nbsp;Download for {os}
           </a>

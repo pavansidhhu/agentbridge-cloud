@@ -1,4 +1,8 @@
+'use client';
+
 import Link from 'next/link';
+import { sendGAEvent } from '@next/third-parties/google';
+
 
 export default function Home() {
   return (
@@ -15,7 +19,11 @@ export default function Home() {
           Supercharge your desktop automations. Bridge PyQt interface, local Playwright browsers, and Gemini API capabilities in one seamless workflow.
         </p>
         <div className="btn-group">
-          <Link href="/download" className="btn btn-primary">
+          <Link 
+            href="/download" 
+            className="btn btn-primary"
+            onClick={() => sendGAEvent({ event: 'button_click', value: 'hero_download_nav' })}
+          >
             Download Desktop App
           </Link>
           <Link href="/privacy" className="btn btn-secondary">

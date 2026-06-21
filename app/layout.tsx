@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
 import Link from 'next/link';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -10,6 +11,19 @@ const inter = Inter({
 export const metadata = {
   title: 'AgentBridge — Local Gemini Automation Bridge',
   description: 'Connect your local PyQt application with Gemini automation capabilities effortlessly. Complete local-cloud control dashboard.',
+  openGraph: {
+    title: 'AgentBridge — Local Gemini Automation Bridge',
+    description: 'Connect your local PyQt application with Gemini automation capabilities effortlessly. Complete local-cloud control dashboard.',
+    url: 'https://agentbridge.dev', // placeholder
+    siteName: 'AgentBridge',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AgentBridge — Local Gemini Automation Bridge',
+    description: 'Connect your local PyQt application with Gemini automation capabilities effortlessly. Complete local-cloud control dashboard.',
+  },
 };
 
 export default function RootLayout({
@@ -23,6 +37,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
       <body>
+        {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
         <header className="header">
           <div className="container nav">
             <Link href="/" className="logo">

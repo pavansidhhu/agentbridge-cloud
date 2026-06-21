@@ -71,6 +71,18 @@ body::after {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 1.5rem;
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Header & Navigation */
@@ -444,12 +456,16 @@ body::after {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .legal-layout {
+    padding: 3rem 1.5rem;
+  }
   .hero-title {
     font-size: 2.75rem;
   }
   .nav-links {
     gap: 1rem;
   }
+
   .footer-content {
     flex-direction: column;
     text-align: center;
