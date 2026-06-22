@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -42,10 +43,15 @@ export default function AdminLoginPage() {
       <div style={styles.glowTop} />
       <div style={styles.glowBottom} />
 
-      <div style={styles.card}>
+      <motion.div 
+        initial={{ opacity: 0, y: 30, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ type: 'spring', stiffness: 80, damping: 15 }}
+        style={styles.card}
+      >
         {/* Logo */}
         <div style={styles.logoRow}>
-          <div style={styles.logoIcon}>A</div>
+          <div style={styles.logoIcon}>▲</div>
           <span style={styles.logoText}>AgentBridge</span>
         </div>
 
@@ -64,8 +70,14 @@ export default function AdminLoginPage() {
               autoComplete="username"
               required
               style={styles.input}
-              onFocus={e => Object.assign(e.target.style, styles.inputFocus)}
-              onBlur={e => Object.assign(e.target.style, styles.input)}
+              onFocus={e => {
+                Object.assign(e.target.style, styles.inputFocus);
+              }}
+              onBlur={e => {
+                e.target.style.borderColor = 'var(--border-color)';
+                e.target.style.boxShadow = 'var(--shadow-sm)';
+                e.target.style.background = 'var(--background)';
+              }}
             />
           </div>
 
@@ -80,21 +92,33 @@ export default function AdminLoginPage() {
               autoComplete="current-password"
               required
               style={styles.input}
-              onFocus={e => Object.assign(e.target.style, styles.inputFocus)}
-              onBlur={e => Object.assign(e.target.style, styles.input)}
+              onFocus={e => {
+                Object.assign(e.target.style, styles.inputFocus);
+              }}
+              onBlur={e => {
+                e.target.style.borderColor = 'var(--border-color)';
+                e.target.style.boxShadow = 'var(--shadow-sm)';
+                e.target.style.background = 'var(--background)';
+              }}
             />
           </div>
 
           {error && (
-            <div style={styles.errorBox}>
+            <motion.div 
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              style={styles.errorBox}
+            >
               <span style={styles.errorIcon}>⚠</span> {error}
-            </div>
+            </motion.div>
           )}
 
-          <button
+          <motion.button
             id="admin-login-btn"
             type="submit"
             disabled={loading}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             style={loading ? { ...styles.btn, ...styles.btnLoading } : styles.btn}
           >
             {loading ? (
@@ -102,22 +126,21 @@ export default function AdminLoginPage() {
             ) : (
               '→  Sign In'
             )}
-          </button>
+          </motion.button>
         </form>
 
         <p style={styles.hint}>🔒 Admin access only</p>
-      </div>
+      </motion.div>
     </div>
   );
 }
 
 const styles = {
   page: {
-    minHeight: '100vh',
+    minHeight: '85vh',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: '#07070b',
     padding: '2rem',
     position: 'relative',
     overflow: 'hidden',
@@ -128,7 +151,7 @@ const styles = {
     left: '30%',
     width: '500px',
     height: '500px',
-    background: 'radial-gradient(circle, rgba(79,70,229,0.35) 0%, transparent 70%)',
+    background: 'radial-gradient(circle, var(--accent-secondary-glow) 0%, transparent 70%)',
     filter: 'blur(80px)',
     pointerEvents: 'none',
     zIndex: 0,
@@ -139,7 +162,7 @@ const styles = {
     right: '20%',
     width: '400px',
     height: '400px',
-    background: 'radial-gradient(circle, rgba(6,182,212,0.3) 0%, transparent 70%)',
+    background: 'radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)',
     filter: 'blur(80px)',
     pointerEvents: 'none',
     zIndex: 0,
@@ -148,13 +171,14 @@ const styles = {
     position: 'relative',
     zIndex: 1,
     width: '100%',
-    maxWidth: '420px',
-    background: 'rgba(18, 18, 29, 0.75)',
-    border: '1px solid rgba(255,255,255,0.08)',
+    maxWidth: '440px',
+    background: 'var(--glass-bg)',
+    border: '1px solid var(--glass-border)',
     borderRadius: '20px',
     padding: '3rem 2.5rem',
     backdropFilter: 'blur(16px)',
-    boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
+    WebkitBackdropFilter: 'blur(16px)',
+    boxShadow: 'var(--glass-shadow)',
   },
   logoRow: {
     display: 'flex',
@@ -166,40 +190,42 @@ const styles = {
   logoIcon: {
     width: '32px',
     height: '32px',
-    background: 'linear-gradient(135deg, #4f46e5, #06b6d4)',
+    background: 'linear-gradient(135deg, var(--accent), var(--accent-secondary))',
     borderRadius: '8px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     color: 'white',
     fontWeight: '900',
-    fontSize: '1rem',
+    fontSize: '0.95rem',
   },
   logoText: {
-    fontSize: '1.3rem',
+    fontSize: '1.35rem',
     fontWeight: '800',
-    background: 'linear-gradient(135deg, #f8fafc, #06b6d4)',
+    fontFamily: 'var(--font-heading)',
+    background: 'linear-gradient(135deg, var(--text-primary) 30%, var(--accent-secondary))',
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   },
   title: {
-    fontSize: '1.75rem',
+    fontSize: '1.85rem',
     fontWeight: '700',
-    color: '#f8fafc',
+    fontFamily: 'var(--font-heading)',
+    color: 'var(--text-primary)',
     textAlign: 'center',
     marginBottom: '0.5rem',
     letterSpacing: '-0.02em',
   },
   subtitle: {
-    color: '#64748b',
+    color: 'var(--text-secondary)',
     fontSize: '0.95rem',
     textAlign: 'center',
-    marginBottom: '2rem',
+    marginBottom: '2.5rem',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '1.25rem',
+    gap: '1.5rem',
   },
   field: {
     display: 'flex',
@@ -207,41 +233,36 @@ const styles = {
     gap: '0.5rem',
   },
   label: {
-    fontSize: '0.85rem',
+    fontSize: '0.825rem',
     fontWeight: '600',
-    color: '#94a3b8',
+    fontFamily: 'var(--font-heading)',
+    color: 'var(--text-secondary)',
     letterSpacing: '0.04em',
     textTransform: 'uppercase',
   },
   input: {
-    background: 'rgba(255,255,255,0.04)',
-    border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '10px',
-    padding: '0.8rem 1rem',
-    color: '#f8fafc',
+    background: 'var(--background)',
+    border: '1px solid var(--border-color)',
+    borderRadius: '12px',
+    padding: '0.85rem 1.1rem',
+    color: 'var(--text-primary)',
     fontSize: '1rem',
     outline: 'none',
-    transition: 'all 0.2s ease',
+    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
     width: '100%',
+    boxShadow: 'var(--shadow-sm)',
   },
   inputFocus: {
-    background: 'rgba(255,255,255,0.07)',
-    border: '1px solid rgba(79,70,229,0.5)',
-    borderRadius: '10px',
-    padding: '0.8rem 1rem',
-    color: '#f8fafc',
-    fontSize: '1rem',
-    outline: 'none',
-    transition: 'all 0.2s ease',
-    width: '100%',
-    boxShadow: '0 0 0 3px rgba(79,70,229,0.15)',
+    background: 'var(--surface)',
+    border: '1px solid var(--accent)',
+    boxShadow: '0 0 0 4px var(--accent-glow)',
   },
   errorBox: {
-    background: 'rgba(239,68,68,0.1)',
-    border: '1px solid rgba(239,68,68,0.3)',
-    borderRadius: '8px',
-    padding: '0.75rem 1rem',
-    color: '#fca5a5',
+    background: 'rgba(239,68,68,0.08)',
+    border: '1px solid rgba(239,68,68,0.2)',
+    borderRadius: '10px',
+    padding: '0.8rem 1.1rem',
+    color: '#ef4444',
     fontSize: '0.9rem',
     display: 'flex',
     alignItems: 'center',
@@ -251,17 +272,17 @@ const styles = {
     fontSize: '1rem',
   },
   btn: {
-    background: 'linear-gradient(135deg, #4f46e5, #3b82f6)',
+    background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%)',
     color: 'white',
     border: 'none',
-    borderRadius: '10px',
-    padding: '0.9rem',
+    borderRadius: '12px',
+    padding: '0.95rem',
     fontSize: '1rem',
     fontWeight: '600',
     cursor: 'pointer',
-    transition: 'all 0.25s ease',
+    transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
     marginTop: '0.5rem',
-    boxShadow: '0 4px 20px rgba(79,70,229,0.4)',
+    boxShadow: '0 4px 15px var(--accent-glow)',
     letterSpacing: '0.02em',
   },
   btnLoading: {
@@ -275,8 +296,8 @@ const styles = {
   },
   hint: {
     textAlign: 'center',
-    color: '#334155',
+    color: 'var(--text-muted)',
     fontSize: '0.8rem',
-    marginTop: '1.5rem',
+    marginTop: '2rem',
   },
 };

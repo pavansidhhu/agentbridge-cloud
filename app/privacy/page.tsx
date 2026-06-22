@@ -1,13 +1,16 @@
-import Link from 'next/link';
+'use client';
 
-export const metadata = {
-  title: 'Privacy Policy — AgentBridge',
-  description: 'Learn about the minimal telemetry data collected by AgentBridge Cloud services.',
-};
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 export default function PrivacyPolicy() {
   return (
-    <div className="container legal-layout">
+    <motion.div 
+      className="container legal-layout"
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
       <header className="legal-header">
         <h1 className="legal-title">Privacy Policy</h1>
         <p className="legal-meta">Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
@@ -34,7 +37,7 @@ export default function PrivacyPolicy() {
           Because all automation browser sessions execute completely locally on your machine, we do not have access to, nor do we store, any of the following private data:
         </p>
         <ul>
-          <li><strong>Gemini Prompts & Responses:</strong> Your queries and answers stay strictly inside your local browser instances.</li>
+          <li><strong>Gemini Prompts & Responses:</strong> Your queries and responses stay strictly inside your local browser instances.</li>
           <li><strong>Browser History:</strong> No browsing logs, cookies (other than local automation session cookies), or page contents are sent to the cloud.</li>
           <li><strong>Passwords & Credentials:</strong> We never see or store your Google account password or session cookies on our servers.</li>
         </ul>
@@ -50,11 +53,13 @@ export default function PrivacyPolicy() {
         </p>
 
         <div style={{ marginTop: '3rem' }}>
-          <Link href="/" className="btn btn-secondary">
-            ← Back to Home
-          </Link>
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} style={{ display: 'inline-block' }}>
+            <Link href="/" className="btn btn-secondary">
+              ← Back to Home
+            </Link>
+          </motion.div>
         </div>
       </article>
-    </div>
+    </motion.div>
   );
 }
