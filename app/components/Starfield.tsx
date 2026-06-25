@@ -33,6 +33,16 @@ export default function Starfield() {
       }
     };
 
+    const mouse = { x: width / 2, y: height / 2 };
+    const targetMouse = { x: width / 2, y: height / 2 };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      targetMouse.x = e.clientX;
+      targetMouse.y = e.clientY;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+
     const handleResize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
@@ -47,31 +57,53 @@ export default function Starfield() {
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
 
+      // Smoothly interpolate mouse position
+      mouse.x += (targetMouse.x - mouse.x) * 0.05;
+      mouse.y += (targetMouse.y - mouse.y) * 0.05;
+
+      // Calculate center offset
+      const offsetX = (mouse.x - width / 2) * 0.1;
+      const offsetY = (mouse.y - height / 2) * 0.1;
+
       const currentTheme = theme === 'system' ? systemTheme : theme;
       const isDark = currentTheme === 'dark';
 
       stars.forEach((star) => {
-        // Soft slate for light mode, pure white for dark mode
         ctx.fillStyle = isDark 
-          ? `rgba(255, 255, 255, ${star.opacity})` 
-          : `rgba(148, 163, 184, ${star.opacity})`;
+          ? `rgba(226, 232, 240, ${star.opacity * 0.8})` // Ice blue / Silver
+          : `rgba(161, 176, 196, ${star.opacity * 0.8})`; // Cool grey
           
         ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        // Add subtle horizontal drift
+        star.x += Math.sin(Date.now() * 0.001 + star.y) * 0.2 * star.speed;
+
+        const xPos = star.x - offsetX * star.speed;
+        const yPos = star.y - offsetY * star.speed;
+        
+        ctx.arc(xPos, yPos, star.size * 1.5, 0, Math.PI * 2);
         ctx.fill();
 
-        // Move star downwards
-        star.y += star.speed;
+        // Move star downwards very gently
+        star.y += star.speed * 0.2;
 
         // Reset if offscreen
-        if (star.y > height) {
-          star.y = 0;
+        if (star.y - offsetY * star.speed > height) {
+          star.y = -50;
+          star.x = Math.random() * width;
+        } else if (star.y - offsetY * star.speed < -50) {
+          star.y = height + 50;
           star.x = Math.random() * width;
         }
+        
+        if (star.x - offsetX * star.speed > width + 50) {
+          star.x = -50;
+        } else if (star.x - offsetX * star.speed < -50) {
+          star.x = width + 50;
+        }
 
-        // Twinkle effect
-        star.opacity += (Math.random() - 0.5) * 0.05;
-        star.opacity = Math.max(0.1, Math.min(1, star.opacity));
+        // Smooth Twinkle effect
+        star.opacity += (Math.random() - 0.5) * 0.02;
+        star.opacity = Math.max(0.05, Math.min(0.6, star.opacity));
       });
 
       animationFrameId = requestAnimationFrame(draw);
@@ -81,6 +113,7 @@ export default function Starfield() {
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', handleMouseMove);
       cancelAnimationFrame(animationFrameId);
     };
   }, [theme, systemTheme]);
