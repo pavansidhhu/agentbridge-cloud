@@ -44,9 +44,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${barlowCondensed.variable} ${barlow.variable}`} suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-      </head>
+
       <body>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           {process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />}
